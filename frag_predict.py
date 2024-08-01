@@ -86,7 +86,7 @@ def cleanup_molecule_rdkit(smiles):
 
 # Function to get 3D structure from SMILES using app.py's endpoint
 def get_3d_structure(smiles):
-    response = requests.post('http://localhost:5000/get_3d_structure', json={'smiles': smiles})
+    response = requests.post('https://frag-predict-final.onrender.com/get_3d_structure', json={'smiles': smiles})
     if response.status_code == 200:
         return response.json().get('pdb')
     else:
