@@ -9,7 +9,7 @@ from docking import run_docking
 import os
 import pandas as pd
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 CORS(app)
 
 @app.route('/')
