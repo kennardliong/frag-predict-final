@@ -3,3 +3,4 @@ Flask-Cors==4.0.1
 rdkit==2023.9.6
 numpy==1.26.4
 dockstring==0.3.2
+joblib==1.4.2
