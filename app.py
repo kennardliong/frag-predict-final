@@ -12,6 +12,10 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/')
+def index():
+    return send_file('index.html')
+
 @app.route('/score', methods=['POST'])
 def score_compound():
     try:
