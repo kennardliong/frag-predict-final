@@ -14,7 +14,7 @@ CORS(app)
 
 @app.route('/')
 def index():
-    return send_file('index.html')
+    return render_template('index.html')
 
 @app.route('/score', methods=['POST'])
 def score_compound():
