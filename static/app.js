@@ -14,7 +14,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
 
     async function fetch2DStructure(smiles, imgElement) {
         try {
-            const response = await fetch('${BASE_URL}/get_2d_structure', {
+            const response = await fetch('/get_2d_structure', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
 
     async function fetch3DStructure(smiles, viewerElement, downloadElement, filename) {
         try {
-            const response = await fetch('${BASE_URL}/get_3d_structure', {
+            const response = await fetch('/get_3d_structure', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
             downloadElement.style.display = 'block';
             downloadElement.onclick = async function() {
                 try {
-                    const response = await fetch('${BASE_URL}/download_pdb', {
+                    const response = await fetch('/download_pdb', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
 
     async function predictFragment(smiles, suffix) {
         try {
-            const response = await fetch('${BASE_URL}/predict_fragment', {
+            const response = await fetch('/predict_fragment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
 
     async function fetchScore(smiles) {
         try {
-            const response = await fetch('${BASE_URL}/score', {
+            const response = await fetch('/score', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
     async function combineFragments(smiles1, smiles2) {
 
         try {
-            const response = await fetch('${BASE_URL}/combine', {
+            const response = await fetch('/combine', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
