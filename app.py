@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_file, send_from_directory, rende
 from flask_cors import CORS
 from rdkit import Chem
 from rdkit.Chem import AllChem, Draw
-from frag_predict import generate_best_fragment, cleanup_molecule_rdkit, calculate_properties, get_3d_structure, best_model, feature_columns
+from fragpred import predict_fragment_smiles, cleanup_molecule_rdkit, calculate_properties, get_3d_structure
 from combine_frag import combine_fragments
 from docking import run_docking
 
@@ -71,11 +71,14 @@ def get_2d_structure_route():
 def predict_fragment():
     data = request.json
     smiles = data.get('smiles')
+    protein = data.get('protein')
+    print("smiles" + smiles)
+    print("protein" + protein)
 
     if not smiles:
         return jsonify({"error": "SMILES string is required"}), 400
 
-    fragment_smiles = generate_best_fragment(smiles, best_model, feature_columns)
+    fragment_smiles = predict_fragment_smiles(smiles, protein)
     cleaned_fragment_smiles = cleanup_molecule_rdkit(fragment_smiles)
     
     if not cleaned_fragment_smiles:

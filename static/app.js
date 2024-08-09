@@ -1,5 +1,4 @@
 const BASE_URL = 'https://frag-predict-final.onrender.com'
-
 document.getElementById('inputForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -140,46 +139,63 @@ document.getElementById('inputForm').addEventListener('submit', function(event) 
             const data = await response.json();
             const combinedContainer = document.getElementById('combined-container');
             combinedContainer.innerHTML = ''; // Clear previous results
-            console.log(data.combined_smiles)
-            if (data.combined_smiles=[]){
+            
+            data.combined_smiles.forEach(element => {
+                console.log(element.properties)
+            });
+
+            if (data.combined_smiles && data.combined_smiles.length == 0){
                 combinedContainer.innerHTML=`
                 <p>No possible combined fragments generated</p>
                 `
             }else{
-                for (const [index, fragment] of data.combined_smiles.entries()) {
-                    const score = await fetchScore(fragment.smiles);
+
+                for (let i = 0; i < data.combined_smiles.length; i++) {
+                    console.log(data.combined_smiles[i])
+                    const fragment = data.combined_smiles[i]
+                    // const score = await fetchScore(fragment.smiles);
                     const combinedDiv = document.createElement('div');
-                    combinedDiv.id = `combined-${index}`;
+                    combinedDiv.className
+                    combinedDiv.id = `combined-${i}`;
                     combinedDiv.innerHTML = `
-                        <h3>Combined Fragment ${index + 1}</h3>
-                        <div id="combined-properties-${index}">
+                        <h3>Combined Fragment ${i + 1}</h3>
+                        <div id="combined-properties-${i}">
                             <p><strong>SMILES:</strong> ${fragment.smiles}</p>
                             <p><strong>Molecular Weight:</strong> ${fragment.properties.molecular_weight} Da</p>
                             <p><strong>LogP Value:</strong> ${fragment.properties.log_p}</p>
                             <p><strong>Hydrogen Bond Acceptors:</strong> ${fragment.properties.hydrogen_bond_acceptors}</p>
                             <p><strong>Hydrogen Bond Donors:</strong> ${fragment.properties.hydrogen_bond_donors}</p>
                             <p><strong>Topological Polar Surface Area:</strong> ${fragment.properties.tpsa} Å²</p>
-                            <p><strong>Docking Score:</strong> ${score}</p>
-
                         </div>
-                        <button class="btn btn-pink btn-toggle" id="toggle-combined-view-${index}">Show 2D View</button>
+                        <button class="btn btn-pink btn-toggle" id="toggle-combined-view-${i}">Show 2D View</button>
                         <div class="img-container">
-                            <img id="combined-2d-${index}" style="display: none;"/>
+                            <img id="combined-2d-${i}" style="display: block;"/>
                         </div>
-                        <div id="viewer-combined-${index}"></div>
-                        <a id="combined-download-${index}" class="btn btn-pink" style="display:none;">Download Combined Molecule PDB</a>
-                    `;
+                        <div id="viewer-combined-${i}"></div>
+                        <a id="combined-download-${i}" class="btn btn-pink" style="display:block;">Download Combined Molecule PDB</a>
 
+                    `;
                     combinedContainer.appendChild(combinedDiv);
 
-                    await fetch2DStructure(fragment.smiles, document.getElementById(`combined-2d-${index}`));
-                    await fetch3DStructure(fragment.smiles, document.getElementById(`viewer-combined-${index}`), document.getElementById(`combined-download-${index}`), `combined_structure_${index}.pdb`);
+                    const imgElement = document.getElementById(`combined-2d-${i}`);
+                    console.log(`Fetching 2D structure for fragment ${i}`);
+                    await fetch2DStructure(fragment.smiles, imgElement);
+                    console.log(`2D structure fetched for fragment ${i}`);
+                
+                    // Fetch and render 3D structure
+                    const viewerElement = document.getElementById(`viewer-combined-${i}`);
+                    const downloadElement = document.getElementById(`combined-download-${i}`);
+                    console.log(`Fetching 3D structure for fragment ${i}`);
+                    await fetch3DStructure(fragment.smiles, viewerElement, downloadElement, `combined_structure_${i}.pdb`);
+                    console.log(`3D structure fetched for fragment ${i}`);
 
-                    document.getElementById(`toggle-combined-view-${index}`).addEventListener('click', function() {
-                        toggleCombinedView(index);
+                    document.getElementById(`toggle-combined-view-${i}`).addEventListener('click', function() {
+                        toggleCombinedView(i);
+
                     });
+
                 };
-            }
+            };
         } catch (error) {
             console.error('Error combining fragments:', error);
         }
