@@ -215,7 +215,7 @@ def tanimoto_similarity(smiles1, smiles2):
     return DataStructs.TanimotoSimilarity(fp1, fp2)
 
 # Example usage
-new_drug_smiles = "CC=C(C)C(=O)OC1C(C)=CC23C(=O)C(C=C(COC(C)=O)C(O)C12O)C1C(CC3C)C1(C)C"  # Replace with your input SMILES
-predicted_fragment_smiles = predict_fragment_smiles(new_drug_smiles, 'mTOR')
+#new_drug_smiles = "CC=C(C)C(=O)OC1C(C)=CC23C(=O)C(C=C(COC(C)=O)C(O)C12O)C1C(CC3C)C1(C)C"  # Replace with your input SMILES
+#predicted_fragment_smiles = predict_fragment_smiles(new_drug_smiles, 'mTOR')
 
-print("Predicted Fragment SMILES:", predicted_fragment_smiles)
+#print("Predicted Fragment SMILES:", predicted_fragment_smiles)
