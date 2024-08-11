@@ -182,8 +182,8 @@ def get_3d_structure(smiles):
 
 def predict_fragment_smiles(smiles, protein, max_length=128):
 
-    model = RobertaForMaskedLM.from_pretrained('model_'+str(protein))  # Update with your model path
-    tokenizer = RobertaTokenizer.from_pretrained('tokenizer_'+str(protein))  # Update with your tokenizer path
+    model = RobertaForMaskedLM.from_pretrained('model-'+str(protein))  # Update with your model path
+    tokenizer = RobertaTokenizer.from_pretrained('tokenizer-'+str(protein))  # Update with your tokenizer path
     model.eval()
 
     inputs = tokenizer(smiles, max_length=max_length, padding='max_length', truncation=True, return_tensors="pt")
