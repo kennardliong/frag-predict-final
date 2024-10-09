@@ -38,14 +38,13 @@ def get_3d_structure_route():
     if not smiles:
         return jsonify({"error": "SMILES string is required"}), 400
 
-    mol = Chem.MolFromSmiles(smiles)
-    if mol is None:
-        return jsonify({"error": "Invalid SMILES string"}), 400
-
     mol = Chem.AddHs(mol)
     AllChem.EmbedMolecule(mol)
     AllChem.MMFFOptimizeMolecule(mol, nonBondedThresh=500.0)
-    pdb_block = Chem.MolToPDBBlock(mol)
+    pdb_block = get_3d_structure(smiles)
+
+    if not pdb_block:
+        return jsonify({"error": "Invalid SMILES string"}), 400
 
     return jsonify({"pdb": pdb_block})
 

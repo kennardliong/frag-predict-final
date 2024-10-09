@@ -37,12 +37,16 @@ def calculate_properties(smiles):
     }
 
 def get_3d_structure(smiles):
-    response = requests.post('/get_3d_structure', json={'smiles': smiles})
-    if response.status_code == 200:
-        return response.json().get('pdb')
-    else:
-        print("Error fetching 3D structure:", response.json())
+    mol = Chem.MolFromSmiles(smiles)
+    if mol is None:
         return None
+
+    mol = Chem.AddHs(mol)
+    AllChem.EmbedMolecule(mol)
+    AllChem.MMFFOptimizeMolecule(mol, nonBondedThresh=500.0)
+    pdb_block = Chem.MolToPDBBlock(mol)
+
+    return pdb_block
 
 
 def tanimoto_similarity(smiles1, smiles2):
